@@ -12,7 +12,6 @@ window.onload = () => {
       text: await favouriteLanguage.determine(getUsername()),
       confirmButtonText: "OK"
     });
-    // alert(await favouriteLanguage.determine(getUsername()));
   };
 
   function getUsername() {
@@ -1726,7 +1725,7 @@ class FavouriteLanguage {
     if (response === NOTFOUNDMESSAGE || response === ERRORMESSAGE) {
       return response;
     } else {
-      return this._calculateMostFrequentLanguages(response);
+      return this._determineMessage(response.data);
     }
   }
 
@@ -1742,27 +1741,31 @@ class FavouriteLanguage {
       });
   }
 
-  _calculateMostFrequentLanguages(response) {
-    const data = response.data;
-    if (this._isEmpty(data)) {
-      return "This user has no repos";
+  _determineMessage(data) {
+    if (this._hasNoCode(data)) {
+      return "This user has no code";
+    } else {
+      return this._calculateMostFrequentLanguages(data);
     }
-    let [freqs, highestFreq, mostFreqLang] = [{}, 0, []];
-    data.forEach(function(repo) {
-      const lang = repo.language;
-      freqs[lang] ? freqs[lang]++ : (freqs[lang] = 1);
-      if (freqs[lang] > highestFreq) {
-        highestFreq = freqs[lang];
-        mostFreqLang = [lang];
-      } else if (freqs[lang] === highestFreq) {
-        mostFreqLang.push(lang);
-      }
-    });
-    return mostFreqLang.join(", ");
   }
 
-  _isEmpty(data) {
-    return data.length === 0;
+  _calculateMostFrequentLanguages(data) {
+    let [frequencies, highestFrequency, mostFrequentLang] = [{}, 0, []];
+    data.forEach(function(repo) {
+      const lang = repo.language;
+      frequencies[lang] ? frequencies[lang]++ : (frequencies[lang] = 1);
+      if (frequencies[lang] > highestFrequency) {
+        highestFrequency = frequencies[lang];
+        mostFrequentLang = [lang];
+      } else if (frequencies[lang] === highestFrequency) {
+        mostFrequentLang.push(lang);
+      }
+    });
+    return mostFrequentLang.join(", ");
+  }
+
+  _hasNoCode(data) {
+    return data.length === 0 || data.every(repo => repo.language === null);
   }
 }
 
