@@ -48,7 +48,7 @@ describe("FavouriteLanguage", () => {
       expect(await favourite.determine()).toStrictEqual("JavaScript, Ruby");
     });
 
-    test("returns a message when user has no repos", async () => {
+    test("returns a message when user has no code", async () => {
       axios.get.mockImplementationOnce(() =>
         Promise.resolve({
           status: 200,
@@ -70,7 +70,7 @@ describe("FavouriteLanguage", () => {
       }
     });
 
-    test("returns a relevant message when user does not exist", async () => {
+    test("returns a message when user does not exist", async () => {
       axios.get.mockImplementation(() =>
         Promise.reject({
           response: { status: 404 }

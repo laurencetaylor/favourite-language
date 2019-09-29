@@ -1749,23 +1749,25 @@ class FavouriteLanguage {
     }
   }
 
+  _hasNoCode(data) {
+    return data.length === 0 || data.every(repo => repo.language === null);
+  }
+
   _calculateMostFrequentLanguages(data) {
-    let [frequencies, highestFrequency, mostFrequentLang] = [{}, 0, []];
+    let [frequencies, highestFrequency, mostFrequentLangs] = [{}, 0, []];
+
     data.forEach(function(repo) {
       const lang = repo.language;
       frequencies[lang] ? frequencies[lang]++ : (frequencies[lang] = 1);
       if (frequencies[lang] > highestFrequency) {
         highestFrequency = frequencies[lang];
-        mostFrequentLang = [lang];
+        mostFrequentLangs = [lang];
       } else if (frequencies[lang] === highestFrequency) {
-        mostFrequentLang.push(lang);
+        mostFrequentLangs.push(lang);
       }
     });
-    return mostFrequentLang.join(", ");
-  }
 
-  _hasNoCode(data) {
-    return data.length === 0 || data.every(repo => repo.language === null);
+    return mostFrequentLangs.join(", ");
   }
 }
 
