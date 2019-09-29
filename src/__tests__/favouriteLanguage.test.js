@@ -33,14 +33,29 @@ describe("FavouriteLanguage", () => {
     });
 
     test("returns a relevant message when user does not exist", async () => {
-      axios.get.mockImplementation(url =>
+      axios.get.mockImplementation(() =>
         Promise.reject({
           response: { status: 404 }
         })
       );
 
       favourite = new FavouriteLanguage();
-      expect(await favourite.determine()).toStrictEqual("User not found");
+      expect(await favourite.determine()).toStrictEqual(
+        "<Error>: User not found"
+      );
+    });
+
+    test("returns a relevant message when something else goes wrong", async () => {
+      axios.get.mockImplementation(() =>
+        Promise.reject({
+          response: { status: 500 }
+        })
+      );
+
+      favourite = new FavouriteLanguage();
+      expect(await favourite.determine()).toStrictEqual(
+        "<Error>: Something went wrong"
+      );
     });
   });
 });

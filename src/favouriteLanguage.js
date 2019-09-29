@@ -1,9 +1,12 @@
 const axios = require("axios");
 
+const NOTFOUNDMESSAGE = "<Error>: User not found";
+const ERRORMESSAGE = "<Error>: Something went wrong";
+
 class FavouriteLanguage {
   async determine(username) {
     const response = await this._fetchData(username);
-    if (response === "User not found") {
+    if (response === NOTFOUNDMESSAGE || response === ERRORMESSAGE) {
       return response;
     } else {
       return this._calculateMostFrequentLanguage(response);
@@ -15,7 +18,9 @@ class FavouriteLanguage {
       .get(`https://api.github.com/users/${username}/repos?per_page=100`)
       .catch(function(error) {
         if (error.response.status === 404) {
-          return "User not found";
+          return NOTFOUNDMESSAGE;
+        } else {
+          return ERRORMESSAGE;
         }
       });
   }
