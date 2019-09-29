@@ -37,7 +37,7 @@ describe("FavouriteLanguage", () => {
       expect(await favourite.determine()).toStrictEqual("JavaScript");
     });
 
-    test("returns multiple most frequently used languages", async () => {
+    test("returns multiple favourite languages", async () => {
       axios.get.mockImplementation(() =>
         Promise.resolve({
           status: 200,
@@ -46,6 +46,19 @@ describe("FavouriteLanguage", () => {
       );
 
       expect(await favourite.determine()).toStrictEqual("JavaScript, Ruby");
+    });
+
+    test("returns a message when user has no repositories", async () => {
+      axios.get.mockImplementation(() =>
+        Promise.resolve({
+          status: 200,
+          data: []
+        })
+      );
+
+      expect(await favourite.determine()).toStrictEqual(
+        "This user has no repos"
+      );
     });
 
     test("returns a relevant message when user does not exist", async () => {

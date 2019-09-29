@@ -26,8 +26,13 @@ class FavouriteLanguage {
   }
 
   _calculateMostFrequentLanguages(response) {
+    const data = response.data;
+    if (this._isEmpty(data)) {
+      return "This user has no repos";
+    }
+
     let [freqs, highestFreq, mostFreqLang] = [{}, 0, []];
-    response.data.forEach(function(repo) {
+    data.forEach(function(repo) {
       const lang = repo.language;
       freqs[lang] ? freqs[lang]++ : (freqs[lang] = 1);
       if (freqs[lang] > highestFreq) {
@@ -37,7 +42,12 @@ class FavouriteLanguage {
         mostFreqLang.push(lang);
       }
     });
+
     return mostFreqLang.join(", ");
+  }
+
+  _isEmpty(data) {
+    return data.length === 0;
   }
 }
 
