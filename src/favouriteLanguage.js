@@ -9,7 +9,7 @@ class FavouriteLanguage {
     if (response === NOTFOUNDMESSAGE || response === ERRORMESSAGE) {
       return response;
     } else {
-      return this._calculateMostFrequentLanguage(response);
+      return this._calculateMostFrequentLanguages(response);
     }
   }
 
@@ -25,17 +25,19 @@ class FavouriteLanguage {
       });
   }
 
-  _calculateMostFrequentLanguage(response) {
-    let [freqs, highestFreq, mostFreqLang] = [{}, 0, null];
+  _calculateMostFrequentLanguages(response) {
+    let [freqs, highestFreq, mostFreqLang] = [{}, 0, []];
     response.data.forEach(function(repo) {
       const lang = repo.language;
       freqs[lang] ? freqs[lang]++ : (freqs[lang] = 1);
       if (freqs[lang] > highestFreq) {
         highestFreq = freqs[lang];
-        mostFreqLang = lang;
+        mostFreqLang = [lang];
+      } else if (freqs[lang] === highestFreq) {
+        mostFreqLang.push(lang);
       }
     });
-    return mostFreqLang;
+    return mostFreqLang.join(", ");
   }
 }
 
