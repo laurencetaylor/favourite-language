@@ -6,7 +6,11 @@ window.onload = () => {
 
   usernameSubmit.onclick = async e => {
     e.preventDefault();
-    alert(await favouriteLanguage.determine(getUsername()));
+    Swal.fire({
+      title: "Our best guess:",
+      text: await favouriteLanguage.determine(getUsername()),
+      confirmButtonText: "OK"
+    });
   };
 
   function getUsername() {

@@ -7,7 +7,12 @@ window.onload = () => {
 
   usernameSubmit.onclick = async e => {
     e.preventDefault();
-    alert(await favouriteLanguage.determine(getUsername()));
+    Swal.fire({
+      title: "Our best guess:",
+      text: await favouriteLanguage.determine(getUsername()),
+      confirmButtonText: "OK"
+    });
+    // alert(await favouriteLanguage.determine(getUsername()));
   };
 
   function getUsername() {
@@ -1742,7 +1747,6 @@ class FavouriteLanguage {
     if (this._isEmpty(data)) {
       return "This user has no repos";
     }
-
     let [freqs, highestFreq, mostFreqLang] = [{}, 0, []];
     data.forEach(function(repo) {
       const lang = repo.language;
@@ -1754,7 +1758,6 @@ class FavouriteLanguage {
         mostFreqLang.push(lang);
       }
     });
-
     return mostFreqLang.join(", ");
   }
 
