@@ -1,0 +1,14 @@
+{
+  "name": "favourite-language",
+  "version": "1.0.0",
+  "description": "Shows a best guess for a user's favourite language",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Laurence Taylor",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
