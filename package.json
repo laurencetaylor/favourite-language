@@ -4,12 +4,14 @@
   "description": "Shows a best guess for a user's favourite language",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "browserify interface.js -o bundle.js"
   },
   "author": "Laurence Taylor",
   "license": "ISC",
   "devDependencies": {
     "axios": "^0.19.0",
+    "browserify": "^16.5.0",
     "jest": "^24.9.0"
   }
 }
