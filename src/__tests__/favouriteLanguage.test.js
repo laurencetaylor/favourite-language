@@ -73,7 +73,7 @@ describe("FavouriteLanguage", () => {
       );
     });
 
-    test("returns a different message when something else goes wrong", async () => {
+    test("returns a message when something else goes wrong", async () => {
       const codes = [400, 401, 403, 405, 409, 500, 503];
       codes.forEach(code => {
         axios.get.mockImplementationOnce(() =>
