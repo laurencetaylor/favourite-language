@@ -70,6 +70,33 @@ describe("FavouriteLanguage", () => {
       }
     });
 
+    test("returns most used language when most repos are empty", async () => {
+      axios.get.mockImplementation(() =>
+        Promise.resolve({
+          status: 200,
+          data: [{ language: null }, { language: null }, { language: "Ruby" }]
+        })
+      );
+
+      expect(await favourite.determine()).toStrictEqual("Ruby");
+    });
+
+    test("returns multiple most used languages when most repos are empty", async () => {
+      axios.get.mockImplementation(() =>
+        Promise.resolve({
+          status: 200,
+          data: [
+            { language: null },
+            { language: null },
+            { language: "Ruby" },
+            { language: "JavaScript" }
+          ]
+        })
+      );
+
+      expect(await favourite.determine()).toStrictEqual("Ruby, JavaScript");
+    });
+
     test("returns a message when user does not exist", async () => {
       axios.get.mockImplementation(() =>
         Promise.reject({

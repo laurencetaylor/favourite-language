@@ -41,9 +41,13 @@ class FavouriteLanguage {
 
   _calculateMostFrequentLanguages(data) {
     let [frequencies, highestFrequency, mostFrequentLangs] = [{}, 0, []];
-
     data.forEach(function(repo) {
       const lang = repo.language;
+
+      if (lang === null) {
+        return;
+      }
+
       frequencies[lang] ? frequencies[lang]++ : (frequencies[lang] = 1);
       if (frequencies[lang] > highestFrequency) {
         highestFrequency = frequencies[lang];
