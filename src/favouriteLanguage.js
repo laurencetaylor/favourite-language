@@ -6,7 +6,7 @@ const ERRORMESSAGE = "<Error>: Something went wrong";
 class FavouriteLanguage {
   async determine(username) {
     const response = await this._fetchData(username);
-    if (response === NOTFOUNDMESSAGE || response === ERRORMESSAGE) {
+    if (typeof response === "string") {
       return response;
     } else {
       return this._determineMessage(response.data);
@@ -16,13 +16,15 @@ class FavouriteLanguage {
   _fetchData(username) {
     return axios
       .get(`https://api.github.com/users/${username}/repos?per_page=100`)
-      .catch(function(error) {
-        if (error.response.status === 404) {
-          return NOTFOUNDMESSAGE;
-        } else {
-          return ERRORMESSAGE;
-        }
-      });
+      .catch(error => this._classifyError(error));
+  }
+
+  _classifyError(error) {
+    if (error.response.status === 404) {
+      return NOTFOUNDMESSAGE;
+    } else {
+      return ERRORMESSAGE;
+    }
   }
 
   _determineMessage(data) {
