@@ -9,7 +9,7 @@ class FavouriteLanguage {
     if (typeof response === "string") {
       return response;
     } else {
-      return this._determineMessage(response.data);
+      return this._calculateMostFrequentLanguages(response.data);
     }
   }
 
@@ -27,27 +27,11 @@ class FavouriteLanguage {
     }
   }
 
-  _determineMessage(data) {
-    if (this._hasNoCode(data)) {
-      return "This user has no code";
-    } else {
-      return this._calculateMostFrequentLanguages(data);
-    }
-  }
-
-  _hasNoCode(data) {
-    return data.length === 0 || data.every(repo => repo.language === null);
-  }
-
   _calculateMostFrequentLanguages(data) {
     let [frequencies, highestFrequency, mostFrequentLangs] = [{}, 0, []];
     data.forEach(function(repo) {
       const lang = repo.language;
-
-      if (lang === null) {
-        return;
-      }
-
+      if (lang === null) return;
       frequencies[lang] ? frequencies[lang]++ : (frequencies[lang] = 1);
       if (frequencies[lang] > highestFrequency) {
         highestFrequency = frequencies[lang];
@@ -56,8 +40,15 @@ class FavouriteLanguage {
         mostFrequentLangs.push(lang);
       }
     });
+    return this._determineMessage(mostFrequentLangs);
+  }
 
-    return mostFrequentLangs.join(", ");
+  _determineMessage(mostFrequentLangs) {
+    if (mostFrequentLangs.length === 0) {
+      return "This user has no code";
+    } else {
+      return mostFrequentLangs.join(", ");
+    }
   }
 }
 
