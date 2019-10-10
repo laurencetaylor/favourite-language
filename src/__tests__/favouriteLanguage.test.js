@@ -10,7 +10,7 @@ describe("FavouriteLanguage", () => {
   });
 
   describe("#determine", () => {
-    test("returns the most frequently used language in happy case", async () => {
+    test("returns the favourite language in happy case", async () => {
       axios.get.mockImplementationOnce(() =>
         Promise.resolve({
           status: 200,
@@ -70,7 +70,7 @@ describe("FavouriteLanguage", () => {
       }
     });
 
-    test("returns most used language when most repos are empty", async () => {
+    test("returns the favourite language when most repos are empty", async () => {
       axios.get.mockImplementation(() =>
         Promise.resolve({
           status: 200,
@@ -81,7 +81,7 @@ describe("FavouriteLanguage", () => {
       expect(await favourite.determine()).toStrictEqual("Ruby");
     });
 
-    test("returns multiple most used languages when most repos are empty", async () => {
+    test("returns multiple favourite languages when most repos are empty", async () => {
       axios.get.mockImplementation(() =>
         Promise.resolve({
           status: 200,
